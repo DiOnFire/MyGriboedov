@@ -1,40 +1,42 @@
 package me.dion.mygriboedov.core.server;
 
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.List;
+import static android.content.Context.WIFI_SERVICE;
 
-import me.dion.mygriboedov.core.server.exception.NoInternetConnectionException;
+import android.content.Context;
+import android.net.wifi.WifiManager;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
+import java.math.BigInteger;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.nio.ByteOrder;
 
 public class GameIDGenerator {
-    private static String ipEncrypt() throws Exception {
-        InetAddress address = getLocalIP();
-        if (address != null) {
-            String[] string_address = address.toString().split(".");
-            return string_address[3] + "." + string_address[4];
-        } else {
-            throw new NoInternetConnectionException("No internet connection!");
-        }
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public static String ipEncrypt(Context context) throws Exception {
+        return getLocalIP(context);
     }
 
-    private static InetAddress getLocalIP() throws Exception {
-        List<NetworkInterface> netInts = Collections.list(NetworkInterface.getNetworkInterfaces());
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private static String getLocalIP(Context context) throws Exception {
+        WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(WIFI_SERVICE);
+        int ipAddress = wifiManager.getConnectionInfo().getIpAddress();
 
-        if (netInts.size() == 1) {
-            return InetAddress.getLocalHost();
+        if (ByteOrder.nativeOrder().equals(ByteOrder.LITTLE_ENDIAN)) {
+            ipAddress = Integer.reverseBytes(ipAddress);
         }
 
-        for (NetworkInterface net : netInts) {
-            if (!net.isLoopback() && !net.isVirtual() && net.isUp()) {
-                Enumeration<InetAddress> addrEnum = net.getInetAddresses();
-                while (addrEnum.hasMoreElements()) {
-                    InetAddress addr = addrEnum.nextElement();
-                    if (!addr.isLoopbackAddress() && !addr.isAnyLocalAddress() && !addr.isLinkLocalAddress() && !addr.isMulticastAddress()) return addr;
-                }
-            }
+        byte[] ipByteArray = BigInteger.valueOf(ipAddress).toByteArray();
+
+        String ipAddressString;
+        try {
+            ipAddressString = InetAddress.getByAddress(ipByteArray).getHostAddress();
+        } catch (UnknownHostException ex) {
+            ipAddressString = null;
         }
-        return null;
+
+        return ipAddressString;
     }
 }

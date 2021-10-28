@@ -1,5 +1,6 @@
 package me.dion.mygriboedov
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -16,6 +17,7 @@ class MainActivity : AppCompatActivity() {
         JoinGameButton = findViewById(R.id.joinGameButton)
 
         CreateGameButton?.setOnClickListener {
+            var intent: Intent
 
         }
     }

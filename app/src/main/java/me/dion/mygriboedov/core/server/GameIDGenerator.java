@@ -16,7 +16,8 @@ import java.nio.ByteOrder;
 public class GameIDGenerator {
     @RequiresApi(api = Build.VERSION_CODES.M)
     public static String ipEncrypt(Context context) throws Exception {
-        return getLocalIP(context);
+        String[] code = getLocalIP(context).split("\\.");
+        return code[2] + code[3];
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)

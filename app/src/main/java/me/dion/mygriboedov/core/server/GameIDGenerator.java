@@ -13,11 +13,17 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.ByteOrder;
 
+import me.dion.mygriboedov.core.server.exception.NoInternetConnectionException;
+
 public class GameIDGenerator {
     @RequiresApi(api = Build.VERSION_CODES.M)
-    public static String ipEncrypt(Context context) {
-        String[] code = getLocalIP(context).split("\\.");
-        return code[2] + code[3];
+    public static String ipEncrypt(Context context) throws NoInternetConnectionException {
+        try {
+            String[] code = getLocalIP(context).split("\\.");
+            return code[2] + code[3];
+        } catch (Exception e) {
+            throw new NoInternetConnectionException("Нет подключения к интернету!");
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)

@@ -6,9 +6,11 @@ import android.os.Bundle
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import me.dion.mygriboedov.core.server.GameIDGenerator
+import me.dion.mygriboedov.core.server.exception.NoInternetConnectionException
 
 class CreateGameActivity : AppCompatActivity() {
     public var GameIdView: TextView? = null
+    private var key: String? = null
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,7 +19,11 @@ class CreateGameActivity : AppCompatActivity() {
 
         GameIdView = findViewById(R.id.gameIdView)
 
-        val key: String = GameIDGenerator.ipEncrypt(applicationContext)
+        key = try {
+            GameIDGenerator.ipEncrypt(applicationContext)
+        } catch (e: NoInternetConnectionException) {
+            e.message;
+        }
 
         GameIdView?.text = key
     }

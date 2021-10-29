@@ -17,7 +17,12 @@ class MainActivity : AppCompatActivity() {
         JoinGameButton = findViewById(R.id.joinGameButton)
 
         CreateGameButton?.setOnClickListener {
-            val intent: Intent = Intent(this, CreateGameActivity::class.java);
+            val intent: Intent = Intent(this, CreateGameActivity::class.java)
+            startActivity(intent)
+        }
+
+        JoinGameButton?.setOnClickListener {
+            val intent: Intent = Intent(this, JoinGameActivity::class.java)
             startActivity(intent)
         }
     }

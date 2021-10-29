@@ -15,13 +15,13 @@ import java.nio.ByteOrder;
 
 public class GameIDGenerator {
     @RequiresApi(api = Build.VERSION_CODES.M)
-    public static String ipEncrypt(Context context) throws Exception {
+    public static String ipEncrypt(Context context) {
         String[] code = getLocalIP(context).split("\\.");
         return code[2] + code[3];
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    private static String getLocalIP(Context context) throws Exception {
+    private static String getLocalIP(Context context) {
         WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(WIFI_SERVICE);
         int ipAddress = wifiManager.getConnectionInfo().getIpAddress();
 
@@ -39,5 +39,9 @@ public class GameIDGenerator {
         }
 
         return ipAddressString;
+    }
+
+    public static String ipDecrypt(String code) {
+        return "192.168." + code.substring(0, 0) + "." + code.substring(1);
     }
 }

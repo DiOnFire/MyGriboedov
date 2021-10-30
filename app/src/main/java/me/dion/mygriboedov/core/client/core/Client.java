@@ -43,6 +43,7 @@ public class Client {
             socket = new Socket(server, 4040);
             reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+
         } catch (Exception e) {
             throw new ServerNotFoundException("Игра с таким кодом не найдена!");
         }

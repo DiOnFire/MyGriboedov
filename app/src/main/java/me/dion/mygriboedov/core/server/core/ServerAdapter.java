@@ -16,16 +16,17 @@ public class ServerAdapter extends Thread {
         this.socket = socket;
         reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+        start();
     }
 
-//    @Override
-//    public void run() {
-//        try {
-//            while (true) {
-//
-//            }
-//        } catch (IOException e) {
-//            // empty catch block
-//        }
-//    }
+    @Override
+    public void run() {
+        try {
+            while (true) {
+
+            }
+        } catch (IOException e) {
+            // empty catch block
+        }
+    }
 }

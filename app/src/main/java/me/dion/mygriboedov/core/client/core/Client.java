@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.InetAddress;
 import java.net.Socket;
 
 import me.dion.mygriboedov.core.client.exception.ServerNotFoundException;
@@ -11,18 +12,22 @@ import me.dion.mygriboedov.core.client.quiz.Question;
 
 public class Client {
     private int score;
+    private Manager m;
+    public int id;
     private Socket socket;
     private BufferedReader reader;
     private BufferedWriter writer;
-    private final String nickname, server;
+    private final String nickname;
+    private final InetAddress server;
 
-    public Client(String server, String nickname) {
+    public Client(InetAddress server, String nickname) {
         this.score = 0;
         this.server = server;
         this.nickname = nickname;
+        m = new Manager(this);
     }
 
-    public String getServer() {
+    public InetAddress getServer() {
         return server;
     }
 
@@ -40,7 +45,7 @@ public class Client {
 
     private void connect() throws ServerNotFoundException {
         try {
-            socket = new Socket(server, 4040);
+            socket = new Socket(server, 4040); // Connect to server
             reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 

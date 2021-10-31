@@ -7,6 +7,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 
+import me.dion.mygriboedov.core.client.quiz.Answer;
+import me.dion.mygriboedov.util.QuestionConverter;
+
 public class ServerAdapter extends Thread {
     private Socket socket;
     private BufferedReader reader;
@@ -21,9 +24,12 @@ public class ServerAdapter extends Thread {
 
     @Override
     public void run() {
+        String input;
         try {
             while (true) {
-
+                input = reader.readLine();
+                Answer answer = QuestionConverter.convertStringToAnswer(input);
+                if (answer.compare()) return;
             }
         } catch (IOException e) {
             // empty catch block

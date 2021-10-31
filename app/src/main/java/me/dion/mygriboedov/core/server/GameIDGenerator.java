@@ -27,7 +27,7 @@ public class GameIDGenerator {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    private static String getLocalIP(Context context) {
+    public static String getLocalIP(Context context) {
         WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(WIFI_SERVICE);
         int ipAddress = wifiManager.getConnectionInfo().getIpAddress();
 

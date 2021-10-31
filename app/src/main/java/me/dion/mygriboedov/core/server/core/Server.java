@@ -9,10 +9,11 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class Server {
-    private ArrayList<ServerAdapter> connections = new ArrayList<>();
+    private LinkedList<ServerAdapter> connections = new LinkedList<>();
     private Socket clientSocket;
     private ServerSocket serverSocket;
     private BufferedReader reader;
+    private boolean canConnect = true;
     private BufferedWriter writer;
     public String address;
     public static final int port = 4040;
@@ -23,7 +24,7 @@ public class Server {
 
     public void startServer() throws IOException {
         try (ServerSocket server = new ServerSocket(port)) {
-            while (true) {
+            while (canConnect) {
                 Socket socket = server.accept();
                 try {
                     connections.add(new ServerAdapter(socket));
@@ -32,5 +33,17 @@ public class Server {
                 }
             }
         }
+    }
+
+    public int getConnectionsSize() {
+        return connections.size();
+    }
+
+    public boolean isInterruptedConnections() {
+        return canConnect;
+    }
+
+    public void interruptConnections() {
+        canConnect = false;
     }
 }

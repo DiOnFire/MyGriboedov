@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import me.dion.mygriboedov.core.client.core.Client
 
 class JoinGameActivity : AppCompatActivity() {
     private var ConnectToGameButton: Button? = null
@@ -17,7 +18,7 @@ class JoinGameActivity : AppCompatActivity() {
         GameIdInput = findViewById(R.id.gameCodeInput)
 
         ConnectToGameButton?.setOnClickListener {
-
+            val client: Client = Client("192.168.0.169", "test")
         }
     }
 }

@@ -24,28 +24,60 @@
         android:id="@+id/createGameButton"
         android:layout_width="258dp"
         android:layout_height="61dp"
-        android:layout_marginStart="76dp"
-        android:layout_marginTop="120dp"
-        android:layout_marginEnd="77dp"
+        android:layout_marginStart="77dp"
+        android:layout_marginEnd="76dp"
         android:layout_marginBottom="11dp"
         android:text="Создать игру"
         app:layout_constraintBottom_toTopOf="@+id/joinGameButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/joinGameButton"
         android:layout_width="258dp"
         android:layout_height="61dp"
-        android:layout_marginStart="76dp"
-        android:layout_marginTop="11dp"
-        android:layout_marginEnd="77dp"
-        android:layout_marginBottom="310dp"
+        android:layout_marginStart="77dp"
+        android:layout_marginTop="145dp"
+        android:layout_marginEnd="76dp"
+        android:layout_marginBottom="166dp"
         android:text="Присоединиться к игре"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/createGameButton" />
+        app:layout_constraintTop_toBottomOf="@+id/nicknameInput" />
+
+    <EditText
+        android:id="@+id/nicknameInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="106dp"
+        android:layout_marginTop="54dp"
+        android:layout_marginEnd="107dp"
+        android:layout_marginBottom="73dp"
+        android:ems="10"
+        android:fontFamily="@font/comfortaa"
+        android:hint="Никнейм"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/createGameButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="187dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="112dp"
+        android:layout_marginTop="38dp"
+        android:layout_marginEnd="112dp"
+        android:layout_marginBottom="54dp"
+        android:fontFamily="@font/comfortaa"
+        android:text="Ваш никнейм"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/nicknameInput"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

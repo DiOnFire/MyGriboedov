@@ -4,16 +4,15 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.Socket;
 
 import me.dion.mygriboedov.core.client.exception.ServerNotFoundException;
 import me.dion.mygriboedov.core.client.quiz.Question;
 
-public class Client {
+public class Client implements Serializable {
     private int score;
-    private Manager m;
-    public int id;
     private Socket socket;
     private BufferedReader reader;
     private BufferedWriter writer;
@@ -24,7 +23,6 @@ public class Client {
         this.score = 0;
         this.server = server;
         this.nickname = nickname;
-        m = new Manager(this);
     }
 
     public InetAddress getServer() {
@@ -43,14 +41,17 @@ public class Client {
         this.score += question.getMaxScore();
     }
 
-    private void connect() throws ServerNotFoundException {
-        try {
-            socket = new Socket(server, 4040); // Connect to server
-            reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+    public void connect() {
+        Thread thread = new Thread(() -> {
+            try {
+                socket = new Socket(server, 4040); // Connect to server
+                reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 
-        } catch (Exception e) {
-            throw new ServerNotFoundException("Игра с таким кодом не найдена!");
-        }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        thread.start();
     }
 }

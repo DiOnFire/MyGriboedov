@@ -48,6 +48,6 @@ public class GameIDGenerator {
     }
 
     public static String ipDecrypt(String code) {
-        return "192.168." + code.substring(0, 0) + "." + code.substring(1);
+        return "192.168." + code.charAt(0) + "." + code.substring(1);
     }
 }

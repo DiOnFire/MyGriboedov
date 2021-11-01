@@ -4,25 +4,30 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.EditText
 
 class MainActivity : AppCompatActivity() {
-    public var CreateGameButton: Button? = null
-    public var JoinGameButton: Button? = null
+    private var createGameButton: Button? = null
+    private var joinGameButton: Button? = null
+    private var nicknameInput: EditText? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        CreateGameButton = findViewById(R.id.createGameButton)
-        JoinGameButton = findViewById(R.id.joinGameButton)
+        createGameButton = findViewById(R.id.createGameButton)
+        joinGameButton = findViewById(R.id.joinGameButton)
+        nicknameInput = findViewById(R.id.nicknameInput)
 
-        CreateGameButton?.setOnClickListener {
-            val intent: Intent = Intent(this, CreateGameActivity::class.java)
+        createGameButton?.setOnClickListener {
+            val intent: Intent = Intent(applicationContext, CreateGameActivity::class.java)
+            intent.putExtra("nickname", nicknameInput?.text.toString())
             startActivity(intent)
         }
 
-        JoinGameButton?.setOnClickListener {
-            val intent: Intent = Intent(this, JoinGameActivity::class.java)
+        joinGameButton?.setOnClickListener {
+            val intent: Intent = Intent(applicationContext, JoinGameActivity::class.java)
+            intent.putExtra("nickname", nicknameInput?.text.toString())
             startActivity(intent)
         }
     }

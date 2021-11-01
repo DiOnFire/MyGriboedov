@@ -57,8 +57,8 @@ class CreateGameActivity : AppCompatActivity() {
 
         Thread(
             Runnable {
-                while (server?.isInterruptedConnections!!) {
-                    membersView?.text = "Подключено " + server?.connectionsSize + " человек"
+                while (!server?.isInterruptedConnections!!) {
+                    membersView?.text = "Игроков: " + server?.connectionsSize
                 }
             }
         ).start()

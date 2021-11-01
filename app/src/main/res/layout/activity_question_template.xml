@@ -13,27 +13,37 @@
         tools:layout_editor_absoluteY="457dp" />
 
     <RadioGroup
+        android:id="@+id/radioGroup"
         android:layout_width="331dp"
         android:layout_height="142dp"
-        tools:layout_editor_absoluteX="42dp"
-        tools:layout_editor_absoluteY="325dp">
+        android:layout_marginStart="42dp"
+        android:layout_marginTop="122dp"
+        android:layout_marginEnd="38dp"
+        android:layout_marginBottom="106dp"
+        app:layout_constraintBottom_toTopOf="@+id/answerButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/questionView">
 
         <RadioButton
             android:id="@+id/variable1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/comfortaa"
             android:text="RadioButton" />
 
         <RadioButton
             android:id="@+id/variable2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/comfortaa"
             android:text="RadioButton" />
 
         <RadioButton
             android:id="@+id/variable3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/comfortaa"
             android:text="RadioButton" />
 
     </RadioGroup>
@@ -42,9 +52,17 @@
         android:id="@+id/questionView"
         android:layout_width="224dp"
         android:layout_height="54dp"
+        android:layout_marginStart="93dp"
+        android:layout_marginTop="149dp"
+        android:layout_marginEnd="94dp"
+        android:layout_marginBottom="122dp"
+        android:fontFamily="@font/comfortaa"
         android:text="TextView"
-        tools:layout_editor_absoluteX="93dp"
-        tools:layout_editor_absoluteY="196dp" />
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/radioGroup"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/answerButton"

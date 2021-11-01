@@ -45,7 +45,7 @@ public class Server implements Serializable {
     }
 
     public boolean isInterruptedConnections() {
-        return canConnect;
+        return !canConnect;
     }
 
     public void interruptConnections() {

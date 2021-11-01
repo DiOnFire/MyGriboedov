@@ -32,10 +32,9 @@ class JoinGameActivity : AppCompatActivity() {
                     )
                     println(extras?.getString("nickname"))
                     intent.putExtra("client", client) // Adding client variable as "global"
+                    client?.connect()
                 }
             ).start()
-
-            client?.connect()
         }
     }
 }

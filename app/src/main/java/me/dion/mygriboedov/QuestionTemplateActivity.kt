@@ -8,4 +8,8 @@ class QuestionTemplateActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_question_template)
     }
+
+    override fun onBackPressed() {
+
+    }
 }

@@ -76,4 +76,12 @@ class CreateGameActivity : AppCompatActivity() {
         client = Client(InetAddress.getByName(GameIDGenerator.getLocalIP(applicationContext)), extras?.getString("nickname"))
         intent.putExtra("client", client) // Adding client variable as "global"
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        intent.removeExtra("client")
+        intent.removeExtra("server")
+        client?.disconnect()
+        server?.closeServer()
+    }
 }

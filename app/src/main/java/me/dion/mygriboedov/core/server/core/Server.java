@@ -24,13 +24,14 @@ public class Server implements Serializable {
 
     public void startServer() {
         Thread thread = new Thread(() -> {
-            try (ServerSocket server = new ServerSocket(port)) {
+            try {
+                serverSocket = new ServerSocket(port);
                 while (canConnect) {
-                    Socket socket = server.accept();
+                    clientSocket = serverSocket.accept();
                     try {
-                        connections.add(new ServerAdapter(socket));
+                        connections.add(new ServerAdapter(clientSocket));
                     } catch (IOException e) {
-                        socket.close();
+                        clientSocket.close();
                     }
                 }
             } catch (IOException e) {
@@ -38,6 +39,13 @@ public class Server implements Serializable {
             }
         });
         thread.start();
+    }
+
+    public void closeServer() throws IOException {
+        clientSocket.close();
+        reader.close();
+        writer.close();
+        serverSocket.close();
     }
 
     public int getConnectionsSize() {

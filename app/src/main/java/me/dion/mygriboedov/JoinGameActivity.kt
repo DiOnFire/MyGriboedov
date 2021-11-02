@@ -37,4 +37,10 @@ class JoinGameActivity : AppCompatActivity() {
             ).start()
         }
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        intent.removeExtra("client")
+        client?.disconnect()
+    }
 }

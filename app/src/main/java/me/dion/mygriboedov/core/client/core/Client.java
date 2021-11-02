@@ -2,6 +2,7 @@ package me.dion.mygriboedov.core.client.core;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Serializable;
@@ -53,5 +54,11 @@ public class Client implements Serializable {
             }
         });
         thread.start();
+    }
+
+    public void disconnect() throws IOException {
+        socket.close();
+        reader.close();
+        writer.close();
     }
 }

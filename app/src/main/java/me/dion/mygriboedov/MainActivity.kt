@@ -20,15 +20,25 @@ class MainActivity : AppCompatActivity() {
         nicknameInput = findViewById(R.id.nicknameInput)
 
         createGameButton?.setOnClickListener {
-            val intent: Intent = Intent(applicationContext, CreateGameActivity::class.java)
-            intent.putExtra("nickname", nicknameInput?.text.toString())
-            startActivity(intent)
+            if (nicknameInput?.text.toString().isNotEmpty()) {
+                val intent: Intent = Intent(applicationContext, CreateGameActivity::class.java)
+                intent.putExtra("nickname", nicknameInput?.text.toString())
+                startActivity(intent)
+            } else {
+                val dialog: EmptyNicknameAlert = EmptyNicknameAlert()
+                dialog.show(supportFragmentManager, "emptyNicknameAlert")
+            }
         }
 
         joinGameButton?.setOnClickListener {
-            val intent: Intent = Intent(applicationContext, JoinGameActivity::class.java)
-            intent.putExtra("nickname", nicknameInput?.text.toString())
-            startActivity(intent)
+            if (nicknameInput?.text.toString().isNotEmpty()) {
+                val intent: Intent = Intent(applicationContext, JoinGameActivity::class.java)
+                intent.putExtra("nickname", nicknameInput?.text.toString())
+                startActivity(intent)
+            } else {
+                val dialog: EmptyNicknameAlert = EmptyNicknameAlert()
+                dialog.show(supportFragmentManager, "emptyNicknameAlert")
+            }
         }
     }
 }

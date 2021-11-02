@@ -32,6 +32,13 @@ public class Server implements Serializable {
                         connections.add(new ServerAdapter(clientSocket));
                     } catch (IOException e) {
                         clientSocket.close();
+
+                        for (ServerAdapter socket : connections) {
+                            if (socket.getSocket() == clientSocket) {
+                                connections.remove(socket);
+                                break;
+                            }
+                        }
                     }
                 }
             } catch (IOException e) {

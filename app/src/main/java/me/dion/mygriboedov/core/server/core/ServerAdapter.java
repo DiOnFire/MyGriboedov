@@ -35,4 +35,8 @@ public class ServerAdapter extends Thread {
             // empty catch block
         }
     }
+
+    public Socket getSocket() {
+        return socket;
+    }
 }

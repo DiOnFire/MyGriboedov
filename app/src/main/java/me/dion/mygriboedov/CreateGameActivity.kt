@@ -66,7 +66,12 @@ class CreateGameActivity : AppCompatActivity() {
         gameIdView?.text = key
 
         startGameButton?.setOnClickListener {
-            server?.interruptConnections()
+            if (server?.connectionsSize!! < 2) {
+                val dialog: TooFewParticipantsAlert = TooFewParticipantsAlert()
+                dialog.show(supportFragmentManager, "tooFewParticipantsAlert")
+            } else {
+                server?.interruptConnections()
+            }
         }
     }
 

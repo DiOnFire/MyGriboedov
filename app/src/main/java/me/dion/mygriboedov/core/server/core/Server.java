@@ -6,11 +6,16 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 public class Server implements Serializable {
-    private LinkedList<ServerAdapter> connections = new LinkedList<>();
+    private final LinkedList<ServerAdapter> connections = new LinkedList<>();
+    private final LinkedList<ServerAdapter> toDisconnect = new LinkedList<>();
+    private final HashMap<String, Integer> results = new HashMap<>();
     private Socket clientSocket;
+    private final ArrayList<String> msgs = new ArrayList<>();
     private ServerSocket serverSocket;
     private BufferedReader reader;
     private boolean canConnect = true;
@@ -22,6 +27,14 @@ public class Server implements Serializable {
         this.address = address;
     }
 
+    public void setTest(String s) {
+        msgs.add(s);
+    }
+
+    public String getTest() {
+        return msgs.size() + "";
+    }
+
     public void startServer() {
         Thread thread = new Thread(() -> {
             try {
@@ -29,16 +42,9 @@ public class Server implements Serializable {
                 while (canConnect) {
                     clientSocket = serverSocket.accept();
                     try {
-                        connections.add(new ServerAdapter(clientSocket));
+                        connections.add(new ServerAdapter(clientSocket, this));
                     } catch (IOException e) {
                         clientSocket.close();
-
-                        for (ServerAdapter socket : connections) {
-                            if (socket.getSocket() == clientSocket) {
-                                connections.remove(socket);
-                                break;
-                            }
-                        }
                     }
                 }
             } catch (IOException e) {

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="me.dion.mygriboedov">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="me.dion.mygriboedov" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -12,13 +13,22 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MyGriboedov">
+        android:theme="@style/Theme.MyGriboedov" >
         <activity
-            android:name=".EnterNicknameActivity"
+            android:name=".TitleScreenActivity"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".WaitingForStartActivity"
             android:exported="true" />
         <activity
             android:name=".QuestionTemplateActivity"
-            android:exported="true" />
+            android:exported="true"
+            tools:ignore="Instantiatable" />
         <activity
             android:name=".JoinGameActivity"
             android:exported="true" />
@@ -26,13 +36,8 @@
             android:name=".CreateGameActivity"
             android:exported="true" />
         <activity
-            android:name=".MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:name=".MultiplayerActivity"
+            android:exported="true" >
         </activity>
 
         <meta-data

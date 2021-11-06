@@ -19,6 +19,8 @@ import kotlin.concurrent.thread
 class CreateGameActivity : AppCompatActivity() {
     private var server: Server? = null
     private var client: Client? = null
+    private var test: TextView? = null
+    private var broadcast: Button? = null
     private var connections: Int = 0
     private var gameIdView: TextView? = null
     private var key: String? = null
@@ -34,6 +36,8 @@ class CreateGameActivity : AppCompatActivity() {
         gameIdView = findViewById(R.id.gameIdView)
         membersView = findViewById(R.id.connectionCountView)
         startGameButton = findViewById(R.id.startGameButton)
+        broadcast = findViewById(R.id.sendBroadcast)
+        test = findViewById(R.id.testView)
 
         key = try {
             GameIDGenerator.ipEncrypt(applicationContext)
@@ -52,13 +56,18 @@ class CreateGameActivity : AppCompatActivity() {
 
         // Client init
 
-        initClient()
-        client?.connect()
+        Thread(
+            Runnable {
+                initClient()
+                client?.connect()
+            }
+        ).start()
 
         Thread(
             Runnable {
                 while (!server?.isInterruptedConnections!!) {
                     membersView?.text = "Игроков: " + server?.connectionsSize
+                    test?.text = server?.test
                 }
             }
         ).start()
@@ -86,7 +95,6 @@ class CreateGameActivity : AppCompatActivity() {
         super.onBackPressed()
         intent.removeExtra("client")
         intent.removeExtra("server")
-        client?.disconnect()
         server?.closeServer()
     }
 }

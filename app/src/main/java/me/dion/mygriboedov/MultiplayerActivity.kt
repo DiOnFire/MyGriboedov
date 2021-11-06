@@ -6,14 +6,14 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 
-class MainActivity : AppCompatActivity() {
+class MultiplayerActivity : AppCompatActivity() {
     private var createGameButton: Button? = null
     private var joinGameButton: Button? = null
     private var nicknameInput: EditText? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_multiplayer)
 
         createGameButton = findViewById(R.id.createGameButton)
         joinGameButton = findViewById(R.id.joinGameButton)

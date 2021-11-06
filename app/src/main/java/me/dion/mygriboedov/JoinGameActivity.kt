@@ -1,5 +1,6 @@
 package me.dion.mygriboedov
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -23,24 +24,36 @@ class JoinGameActivity : AppCompatActivity() {
         GameIdInput = findViewById(R.id.gameCodeInput)
 
         ConnectToGameButton?.setOnClickListener {
-            Thread (
-                Runnable {
-                    val extras: Bundle? = intent.extras
-                    client = Client(
-                        InetAddress.getByName(GameIDGenerator.ipDecrypt(GameIdInput?.text.toString())),
-                        extras?.getString("nickname")
-                    )
-                    println(extras?.getString("nickname"))
-                    intent.putExtra("client", client) // Adding client variable as "global"
-                    client?.connect()
-                }
-            ).start()
+            if (GameIdInput?.text.toString().isNotEmpty()) {
+                Thread(
+                    Runnable {
+                        val extras: Bundle? = intent.extras
+                        client = Client(
+                            InetAddress.getByName(GameIDGenerator.ipDecrypt(GameIdInput?.text.toString())),
+                            extras?.getString("nickname")
+                        )
+                        intent.putExtra("client", client) // Adding client variable as "global"
+
+                        val connect: Boolean? = client?.connect()
+
+                        if (!connect!!) {
+                            val dialog: InvalidCodeIDAlert = InvalidCodeIDAlert()
+                            dialog.show(supportFragmentManager, "invalidCodeIDAlert")
+                        } else {
+                            val intent: Intent = Intent(applicationContext, WaitingForStartActivity::class.java)
+                            startActivity(intent)
+                        }
+                    }
+                ).start()
+            } else {
+                val dialog: InvalidCodeIDAlert = InvalidCodeIDAlert()
+                dialog.show(supportFragmentManager, "invalidCodeIDAlert")
+            }
         }
     }
 
     override fun onBackPressed() {
         super.onBackPressed()
         intent.removeExtra("client")
-        client?.disconnect()
     }
 }

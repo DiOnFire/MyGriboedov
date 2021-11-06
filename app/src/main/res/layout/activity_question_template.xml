@@ -50,8 +50,8 @@
 
     <TextView
         android:id="@+id/questionView"
-        android:layout_width="224dp"
-        android:layout_height="54dp"
+        android:layout_width="320dp"
+        android:layout_height="121dp"
         android:layout_marginStart="93dp"
         android:layout_marginTop="149dp"
         android:layout_marginEnd="94dp"
@@ -59,6 +59,7 @@
         android:fontFamily="@font/comfortaa"
         android:text="TextView"
         android:textAlignment="center"
+        android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/radioGroup"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

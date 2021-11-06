@@ -1,64 +1,91 @@
 package me.dion.mygriboedov.core.client.core;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.Socket;
 
-import me.dion.mygriboedov.core.client.exception.ServerNotFoundException;
-import me.dion.mygriboedov.core.client.quiz.Question;
-
 public class Client implements Serializable {
-    private int score;
     private Socket socket;
-    private BufferedReader reader;
-    private BufferedWriter writer;
     private final String nickname;
     private final InetAddress server;
+    private WriteThread writeThread;
+    private ReadThread readThread;
 
     public Client(InetAddress server, String nickname) {
-        this.score = 0;
         this.server = server;
         this.nickname = nickname;
     }
 
-    public InetAddress getServer() {
-        return server;
+    public WriteThread getWriteThread() {
+        return writeThread;
     }
 
     public String getNickname() {
         return nickname;
     }
 
-    public int getScore() {
-        return score;
+    public boolean connect() {
+        try {
+            socket = new Socket(server, 4040); // Connect to server
+            readThread = new ReadThread(socket, this);
+            writeThread = new WriteThread(socket, this);
+            readThread.start();
+            writeThread.start();
+        } catch (IOException e) {
+            return false;
+        }
+        return true;
     }
 
-    public void increaseScore(Question question) {
-        this.score += question.getMaxScore();
+    public void setQuestion(String q) {
+
     }
 
-    public void connect() {
-        Thread thread = new Thread(() -> {
+    public static class ReadThread extends Thread {
+        private BufferedReader reader;
+
+        public ReadThread(Socket socket, Client client) {
             try {
-                socket = new Socket(server, 4040); // Connect to server
-                reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-
-            } catch (Exception e) {
-                e.printStackTrace();
+                InputStream input = socket.getInputStream();
+                reader = new BufferedReader(new InputStreamReader(input));
+            } catch (IOException ex) {
+                ex.printStackTrace();
             }
-        });
-        thread.start();
+        }
+
+        public void run() {
+            while (true) {
+                try {
+                    String response = reader.readLine();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                    break;
+                }
+            }
+        }
     }
 
-    public void disconnect() throws IOException {
-        socket.close();
-        reader.close();
-        writer.close();
+    public static class WriteThread extends Thread {
+        private PrintWriter writer;
+
+        public WriteThread(Socket socket, Client client) {
+            try {
+                OutputStream output = socket.getOutputStream();
+                writer = new PrintWriter(output, true);
+            } catch (IOException ex) {
+                System.out.println("Error getting output stream: " + ex.getMessage());
+                ex.printStackTrace();
+            }
+        }
+
+        public void sendMessage(String message_) {
+            writer.println(message_);
+        }
     }
 }

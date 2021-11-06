@@ -6,9 +6,9 @@ import androidx.annotation.RequiresApi;
 
 import java.util.Arrays;
 
-import me.dion.mygriboedov.core.client.quiz.Answer;
-import me.dion.mygriboedov.core.client.quiz.Question;
-import me.dion.mygriboedov.core.client.quiz.QuizManager;
+import me.dion.mygriboedov.quiz.Answer;
+import me.dion.mygriboedov.quiz.Question;
+import me.dion.mygriboedov.quiz.QuizManager;
 
 public class QuestionConverter {
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -25,7 +25,7 @@ public class QuestionConverter {
 
     public static Question convertStringToQuestion(String str) {
         String[] data = str.split(":");
-        return new Question(data[0], Integer.parseInt(data[2]), data[1], Arrays.copyOfRange(data, 3, data.length - 1));
+        return new Question(data[0], Integer.parseInt(data[1]), data[2], Arrays.copyOfRange(data, 2, data.length - 1));
     }
 
     public static Answer convertStringToAnswer(String str) {

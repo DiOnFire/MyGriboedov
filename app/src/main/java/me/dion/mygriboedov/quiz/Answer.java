@@ -1,4 +1,4 @@
-package me.dion.mygriboedov.core.client.quiz;
+package me.dion.mygriboedov.quiz;
 
 public class Answer {
     private final Question question;

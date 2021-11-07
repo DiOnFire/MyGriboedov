@@ -1,22 +1,13 @@
 package me.dion.mygriboedov.quiz;
 
-import android.os.Build;
-import android.widget.ArrayAdapter;
-
-import androidx.annotation.RequiresApi;
-
-import java.io.IOException;
 import java.io.Serializable;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Scanner;
 
 import me.dion.mygriboedov.util.QuestionConverter;
 
 public class QuizManager implements Serializable {
     private final ArrayList<Question> questions = new ArrayList<>();
-    private int totalScore = 0;
+    private int totalScore = 1;
     private int count = 0;
 
     public boolean loadQuestions() {
@@ -47,14 +38,15 @@ public class QuizManager implements Serializable {
         totalScore += q.getMaxScore();
     }
 
+    public int getScore() {
+        return totalScore;
+    }
+
     public ArrayList<Question> getQuestions() {
         return questions;
     }
 
     public Question getNextQuestion() {
-        System.out.println(questions.size());
-        Question q = questions.get(count);
-        count++;
-        return q;
+        return questions.size() - 1 >= count ? questions.get(count++) : null;
     }
 }

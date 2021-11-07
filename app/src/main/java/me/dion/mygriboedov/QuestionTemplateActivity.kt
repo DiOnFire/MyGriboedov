@@ -1,17 +1,13 @@
 package me.dion.mygriboedov
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.RadioButton
-import android.widget.RadioGroup
-import android.widget.TextView
-import me.dion.mygriboedov.core.client.core.Client
+import android.widget.*
 import me.dion.mygriboedov.quiz.Answer
 import me.dion.mygriboedov.quiz.Question
 import me.dion.mygriboedov.quiz.QuizManager
 import me.dion.mygriboedov.util.QuestionConverter
-import java.util.ArrayList
 
 class QuestionTemplateActivity : AppCompatActivity() {
     private var answerButton: Button? = null
@@ -21,6 +17,7 @@ class QuestionTemplateActivity : AppCompatActivity() {
     private var variable3: RadioButton? = null
     private var questionView: TextView? = null
     private var question: Question? = null
+    private var quizManager: QuizManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,18 +30,33 @@ class QuestionTemplateActivity : AppCompatActivity() {
         variable3 = findViewById(R.id.variable3)
         questionView = findViewById(R.id.questionView)
 
-        question = intent.extras?.getSerializable("question") as Question
+        val bundle: Bundle? = intent.extras
+        question = bundle?.getSerializable("question") as Question
+        quizManager = bundle.getSerializable("quizManager") as? QuizManager
+        //   val client: Client = intent.extras?.getSerializable("client") as Client
 
         generateActivity()
 
         answerButton?.setOnClickListener {
-            val answer: Answer = QuestionConverter.convertStringToAnswer(generateAnswer())
+            if (generateAnswer() != null) {
+                val answer: Answer =
+                    QuestionConverter.convertStringToAnswer(question, generateAnswer())
+                if (answer.compare()) {
+                    quizManager?.increaseScore(question)
 
-            if (answer.compare()) {
-                val quizManager: QuizManager = intent.extras?.getSerializable("quizManager") as QuizManager
-                quizManager.increaseScore(question)
+                    val intent: Intent = Intent(
+                        this,
+                        QuestionTemplateActivity::class.java
+                    )
+
+                    intent.putExtra("question", quizManager?.nextQuestion)
+                    intent.putExtra("quizManager", quizManager)
+
+                    startActivity(intent)
+                }
+            } else {
+                NoAnswerAlert().show(supportFragmentManager, "noAnswerAlert")
             }
-//            val client: Client = intent.extras?.getSerializable("client") as Client
         }
     }
 
@@ -56,13 +68,17 @@ class QuestionTemplateActivity : AppCompatActivity() {
         variable3?.text = variables[2]
     }
 
-    private fun generateAnswer(): String {
+    private fun generateAnswer(): String? {
         var answer: String = ""
-        val client: Client = intent.extras?.getSerializable("client") as Client
-        answer += client.nickname + ":"
+//        answer += client.nickname + ":"
         val selectedRadioButton = findViewById<RadioButton>(answerGroup?.checkedRadioButtonId!!)
-        answer += selectedRadioButton.text
-        return answer
+
+        if (selectedRadioButton != null) {
+            answer += selectedRadioButton.text
+            return answer
+        }
+
+        return null
     }
 
     override fun onBackPressed() {

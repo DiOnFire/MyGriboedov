@@ -21,22 +21,17 @@ class TitleScreenActivity : AppCompatActivity() {
 
         startButton?.setOnClickListener {
             val quizManager: QuizManager = QuizManager()
-
-
-            val toast: Toast = Toast.makeText(applicationContext, "Вопросы загружаются...", Toast.LENGTH_LONG)
-            toast.setGravity(Gravity.BOTTOM, 0, 0);
-            toast.show();
-
-            intent.putExtra("quizManager", quizManager)
+            quizManager.loadQuestions()
 
             val question = quizManager.nextQuestion
 
             val intent: Intent = Intent(
-                applicationContext,
+                this,
                 QuestionTemplateActivity::class.java
             )
 
             intent.putExtra("question", question)
+            intent.putExtra("quizManager", quizManager)
 
             startActivity(intent)
         }

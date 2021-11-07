@@ -2,27 +2,22 @@ package me.dion.mygriboedov.quiz;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import me.dion.mygriboedov.util.QuestionConverter;
 
 public class QuizManager implements Serializable {
     private final ArrayList<Question> questions = new ArrayList<>();
-    private int totalScore = 1;
+    private int totalScore = 0;
     private int count = 0;
 
-    public boolean loadQuestions() {
-//        try {
-//            URL url = new URL("https://pastebin.com/raw/HBPYUXZx");
-//            Scanner scanner = new Scanner(url.openStream());
-//            while (scanner.hasNext()) {
-//                questions.add(QuestionConverter.convertStringToQuestion(scanner.nextLine()));
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+    public void loadQuestions() {
         questions.add(QuestionConverter.convertStringToQuestion("bebra?:24:bebrochka:frede:2324:bebrochka"));
         questions.add(QuestionConverter.convertStringToQuestion("frede?:12:freede:frede:fred:freede"));
-        return questions.size() > 0;
+        questions.add(QuestionConverter.convertStringToQuestion("bebbra?:24:bebrochka:frede:2324:bebrochka"));
+        questions.add(QuestionConverter.convertStringToQuestion("freede?:12:freede:frede:fred:freede"));
+        questions.add(QuestionConverter.convertStringToQuestion("beebra?:24:bebrochka:frede:2324:bebrochka"));
+        Collections.shuffle(questions);
     }
 
     public Question findQuestionByName(String name) {
@@ -48,5 +43,11 @@ public class QuizManager implements Serializable {
 
     public Question getNextQuestion() {
         return questions.size() - 1 >= count ? questions.get(count++) : null;
+    }
+
+    public void reload() {
+        Collections.shuffle(questions);
+        totalScore = 0;
+        count = 0;
     }
 }

@@ -3,6 +3,7 @@ package me.dion.mygriboedov
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.widget.*
 import me.dion.mygriboedov.quiz.Answer
 import me.dion.mygriboedov.quiz.Question
@@ -17,6 +18,7 @@ class QuestionTemplateActivity : AppCompatActivity() {
     private var variable3: RadioButton? = null
     private var questionView: TextView? = null
     private var question: Question? = null
+    private var timeLeft: TextView? = null
     private var quizManager: QuizManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,34 +31,61 @@ class QuestionTemplateActivity : AppCompatActivity() {
         variable2 = findViewById(R.id.variable2)
         variable3 = findViewById(R.id.variable3)
         questionView = findViewById(R.id.questionView)
+        timeLeft = findViewById(R.id.timeLeftView)
 
         val bundle: Bundle? = intent.extras
         question = bundle?.getSerializable("question") as Question
         quizManager = bundle.getSerializable("quizManager") as? QuizManager
         //   val client: Client = intent.extras?.getSerializable("client") as Client
 
+        val timer = object: CountDownTimer(20000, 1000) {
+            override fun onTick(p0: Long) {
+                timeLeft?.text = (p0 / 1000).toString()
+            }
+
+            override fun onFinish() {
+                screenChanger()
+            }
+        }
+
+        timer.start()
+
         generateActivity()
 
         answerButton?.setOnClickListener {
             if (generateAnswer() != null) {
-                val answer: Answer =
-                    QuestionConverter.convertStringToAnswer(question, generateAnswer())
-                if (answer.compare()) {
-                    quizManager?.increaseScore(question)
-
-                    val intent: Intent = Intent(
-                        this,
-                        QuestionTemplateActivity::class.java
-                    )
-
-                    intent.putExtra("question", quizManager?.nextQuestion)
-                    intent.putExtra("quizManager", quizManager)
-
-                    startActivity(intent)
-                }
+                timer.cancel()
+                screenChanger()
             } else {
                 NoAnswerAlert().show(supportFragmentManager, "noAnswerAlert")
             }
+        }
+    }
+
+    private fun screenChanger() {
+        val answer: Answer =
+            QuestionConverter.convertStringToAnswer(question, generateAnswer())
+        if (answer.compare()) {
+            quizManager?.increaseScore(question)
+        }
+
+        val question: Question? = quizManager?.nextQuestion
+
+        if (question != null) {
+            val intent: Intent = Intent(
+                this,
+                QuestionTemplateActivity::class.java
+            )
+            intent.putExtra("question", question)
+            intent.putExtra("quizManager", quizManager)
+            startActivity(intent)
+        } else {
+            val intent: Intent = Intent(
+                this,
+                GameOverActivity::class.java
+            )
+            intent.putExtra("quizManager", quizManager)
+            startActivity(intent)
         }
     }
 

@@ -12,11 +12,8 @@ public class QuizManager implements Serializable {
     private int count = 0;
 
     public void loadQuestions() {
-        questions.add(QuestionConverter.convertStringToQuestion("bebra?:24:bebrochka:frede:2324:bebrochka"));
-        questions.add(QuestionConverter.convertStringToQuestion("frede?:12:freede:frede:fred:freede"));
-        questions.add(QuestionConverter.convertStringToQuestion("bebbra?:24:bebrochka:frede:2324:bebrochka"));
-        questions.add(QuestionConverter.convertStringToQuestion("freede?:12:freede:frede:fred:freede"));
-        questions.add(QuestionConverter.convertStringToQuestion("beebra?:24:bebrochka:frede:2324:bebrochka"));
+        questions.add(QuestionConverter.convertStringToQuestion("question:points:correct_variable:variable1:variable2:variable3"));
+        // лучше грузить их с пастбина, но для этого надо будет юзать дополнительный поток
         Collections.shuffle(questions);
     }
 

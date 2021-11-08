@@ -1,4 +1,5 @@
 # MyGriboedov
 
-это мой проект по литературе в школе если че
-это игра с тестами про Грибоедова с мультиплеером!!
+My school literature project.
+The game is a quiz on the topic of "Gore ot uma".
+Android 5+ is required to run.
